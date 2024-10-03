@@ -3,7 +3,6 @@ auth_enabled: false
 server:
   http_listen_port: 3100
   grpc_listen_port: 9096
-  log_level: debug
   
 common:
   instance_addr: 127.0.0.1
@@ -17,12 +16,6 @@ common:
     kvstore:
       store: inmemory
 
-query_range:
-  results_cache:
-    cache:
-      embedded_cache:
-        enabled: true
-        max_size_mb: 100
 
 schema_config:
   configs:

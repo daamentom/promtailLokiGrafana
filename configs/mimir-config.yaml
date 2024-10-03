@@ -1,0 +1,55 @@
+server:
+  http_listen_port: 9009
+  grpc_listen_port: 9095
+
+distributor:
+  ring:
+    kvstore:
+      store: inmemory
+
+ingester:
+  lifecycler:
+    ring:
+      kvstore:
+        store: inmemory
+  max_transfer_retries: 3
+
+limits_config:
+  max_concurrent_queries: 20
+  max_samples_per_query: 50000000
+
+storage_config:
+  backend: filesystem
+  filesystem:
+    dir: /mimir/data
+
+compactor:
+  working_directory: /mimir/compactor
+  shared_store: filesystem
+  compaction_interval: 10m
+
+blocks_storage:
+  tsdb:
+    retention_period: 24h
+    block_ranges_period: 2h
+  bucket_store:
+    sync_interval: 15m
+  bucket:
+    type: filesystem
+    filesystem:
+      dir: /mimir/blocks
+
+ruler:
+  storage:
+    type: local
+    local:
+      directory: /mimir/rules
+  rule_path: /mimir/rules
+  ring:
+    kvstore:
+      store: inmemory
+
+alertmanager_storage:
+  type: local
+  local:
+    directory: /mimir/alertmanager

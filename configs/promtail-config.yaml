@@ -6,13 +6,42 @@ positions:
   filename: /tmp/positions.yaml
 
 clients:
-  - url: http://localhost:3100/loki/api/v1/push
+  - url: http://loki:3100/loki/api/v1/push
 
 scrape_configs:
-- job_name: system
+- job_name: localstack
+  static_configs:
+  - targets:
+      - localhost:4566
+    labels:
+      job: localstack
+      __path__: /var/log/localstack/*log
+- job_name: s3_localstack
+  static_configs:
+  - targets:
+      - localhost:4566
+    labels:
+      job: localstack_s3
+      __path__: /var/log/localstack/s3/*log 
+- job_name: local
   static_configs:
   - targets:
       - localhost
     labels:
       job: varlogs
-      __path__: /var/log/*log
+      __path__: /var/log/*log 
+# Koen raad aan om een nodeJS app te maken en kijk of je die logs kan pakken.
+- job_name: nodejs-logs
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: nodejs-app
+      __path__: /mnt/logs/application.log
+- job_name: test
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: test-log
+      __path__: /tmp/test.log
